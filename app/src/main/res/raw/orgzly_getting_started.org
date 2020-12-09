@@ -6,6 +6,16 @@ Welcome to Orgzly!
 
 You can select multiple notes.
 
+** Tables are available
+
+| Here is a table                                   |       |         |       |
+| We rely on horizontal scrolling to show very wide | table | content |       |
+
+You can have more than one table in a note
+
+| Like this | one     |
+| for       | example |
+
 ** Fling note right to open its quick-menu
 
 Fling it left to open a different menu.
