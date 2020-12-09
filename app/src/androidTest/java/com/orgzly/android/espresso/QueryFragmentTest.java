@@ -11,6 +11,7 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.main.MainActivity;
 import com.orgzly.org.datetime.OrgDateTime;
 
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -720,7 +721,8 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onNotesInSearch().check(matches(recyclerViewItemCount(3)));
         onNoteInSearch(1, R.id.item_head_title).check(matches(allOf(withText(containsString("Note B")), isDisplayed())));
-        onNoteInSearch(1, R.id.item_head_content).check(matches(allOf(withText(containsString("Content for Note B")), isDisplayed())));
+        Assert.fail("FIXME");
+//        onNoteInSearch(1, R.id.item_head_content).check(matches(allOf(withText(containsString("Content for Note B")), isDisplayed())));
     }
 
     @Test

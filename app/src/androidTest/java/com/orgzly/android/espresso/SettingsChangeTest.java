@@ -6,6 +6,7 @@ import com.orgzly.R;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.ui.main.MainActivity;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -82,16 +83,17 @@ public class SettingsChangeTest extends OrgzlyTest {
     public void testDisplayedContentInBook() {
         onBook(0).perform(click());
 
-        onNoteInBook(1, R.id.item_head_content)
-                .check(matches(allOf(withText(containsString("Content for [a-1]")), isDisplayed())));
-
-        onActionItemClick(R.id.activity_action_settings, R.string.settings);
-        clickSetting("prefs_screen_notebooks", R.string.pref_title_notebooks);
-        clickSetting("pref_key_is_notes_content_displayed_in_list", R.string.display_content);
-        pressBack();
-        pressBack();
-
-        onNoteInBook(1, R.id.item_head_content).check(matches(not(isDisplayed())));
+        Assert.fail("FIXME");
+//        onNoteInBook(1, R.id.item_head_content)
+//                .check(matches(allOf(withText(containsString("Content for [a-1]")), isDisplayed())));
+//
+//        onActionItemClick(R.id.activity_action_settings, R.string.settings);
+//        clickSetting("prefs_screen_notebooks", R.string.pref_title_notebooks);
+//        clickSetting("pref_key_is_notes_content_displayed_in_list", R.string.display_content);
+//        pressBack();
+//        pressBack();
+//
+//        onNoteInBook(1, R.id.item_head_content).check(matches(not(isDisplayed())));
     }
 
     private void setDefaultPriority(String priority) {

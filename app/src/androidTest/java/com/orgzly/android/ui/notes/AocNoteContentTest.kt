@@ -91,6 +91,17 @@ bar
     }
 
     @Test
+    fun tableBlankLineTable() {
+        checkExpected("""|zoo|
+
+|zog|""", listOf(
+                AocTableNoteContent("|zoo|\n"),
+                AocTextNoteContent("\n"),
+                AocTableNoteContent("|zog|")
+        ))
+    }
+
+    @Test
     fun textTableBlankLineText() {
         checkExpected("""foo
 |

@@ -9,6 +9,7 @@ import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
@@ -66,38 +67,43 @@ class InternalLinksTest : OrgzlyTest() {
 
     @Test
     fun testDifferentCaseUuidInternalLink() {
-        onNoteInBook(1, R.id.item_head_content)
-                .perform(clickClickableSpan("id:bdce923b-C3CD-41ED-B58E-8BDF8BABA54F"))
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-2]")))
+        Assert.fail("FIXME")
+//        onNoteInBook(1, R.id.item_head_content)
+//                .perform(clickClickableSpan("id:bdce923b-C3CD-41ED-B58E-8BDF8BABA54F"))
+//        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-2]")))
     }
 
     @Test
     fun testDifferentCaseCustomIdInternalLink() {
-        onNoteInBook(2, R.id.item_head_content)
-                .perform(clickClickableSpan("#Different case custom id"))
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-1]")))
+        Assert.fail("FIXME")
+//        onNoteInBook(2, R.id.item_head_content)
+//                .perform(clickClickableSpan("#Different case custom id"))
+//        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-1]")))
     }
 
     @Test
     fun testCustomIdLink() {
-        onNoteInBook(3, R.id.item_head_content)
-                .perform(clickClickableSpan("#Link to note in a different book"))
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-3]")))
+        Assert.fail("FIXME")
+//        onNoteInBook(3, R.id.item_head_content)
+//                .perform(clickClickableSpan("#Link to note in a different book"))
+//        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-3]")))
     }
 
     @Test
     fun testBookLink() {
-        onNoteInBook(4, R.id.item_head_content)
-                .perform(clickClickableSpan("file:book-b.org"))
-        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()))
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note [b-1]")))
+        Assert.fail("FIXME")
+//        onNoteInBook(4, R.id.item_head_content)
+//                .perform(clickClickableSpan("file:book-b.org"))
+//        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()))
+//        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note [b-1]")))
     }
 
     @Test
     fun testBookRelativeLink() {
-        onNoteInBook(5, R.id.item_head_content)
-                .perform(clickClickableSpan("file:./book-b.org"))
-        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()))
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note [b-1]")))
+        Assert.fail("FIXME")
+//        onNoteInBook(5, R.id.item_head_content)
+//                .perform(clickClickableSpan("file:./book-b.org"))
+//        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()))
+//        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note [b-1]")))
     }
 }
