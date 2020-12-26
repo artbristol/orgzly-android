@@ -1,13 +1,16 @@
 package com.orgzly.android.ui.notes
 
 import android.content.Context
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.View
+import android.view.ViewGroup
+import android.widget.HorizontalScrollView
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.db.entity.Note
@@ -16,8 +19,10 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.TimeType
 import com.orgzly.android.ui.util.TitleGenerator
 import com.orgzly.android.ui.util.styledAttributes
+import com.orgzly.android.ui.views.TextViewWithMarkup
 import com.orgzly.android.usecase.NoteToggleFolding
 import com.orgzly.android.usecase.NoteToggleFoldingSubtree
+import com.orgzly.android.usecase.NoteUpdateContent
 import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.UserTimeFormatter
 import com.orgzly.databinding.ItemAgendaDividerBinding
@@ -111,11 +116,73 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         if (note.hasContent() && titleGenerator.shouldDisplayContent(note)) {
 
             // this is absolutely not the place to split the note, but doing it here for PoC
-            val split: List<AocNoteContent> = AocNoteContent.parse(note.content!!)
+            val alternatingTableAndTextContent: List<AocNoteContent> = AocNoteContent.parse(note.content!!)
 
-            val contentRecyclerView = holder.itemView.findViewById<RecyclerView>(R.id.aoc_item_head_content_list)
+            val linearLayout = holder.itemView.findViewById<LinearLayout>(R.id.aoc_item_head_content_list)
 
-            contentRecyclerView.adapter = AocNoteContentSectionAdapter(split)
+            linearLayout.removeAllViews()
+
+            alternatingTableAndTextContent.forEach { aocNoteContent ->
+                when (aocNoteContent) {
+                    is AocNoteContent.AocTableNoteContent -> {
+
+                        val horizontalScrollView = HorizontalScrollView(context)
+
+                        horizontalScrollView.layoutParams = ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT
+                        )
+
+                        val textView = TextView(context)
+                        textView.typeface = Typeface.MONOSPACE
+                        textView.text = aocNoteContent.text
+
+                        textView.layoutParams = ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT
+                        )
+
+                        horizontalScrollView.addView(textView)
+
+                        linearLayout.addView(horizontalScrollView)
+                    }
+                    else -> {
+
+                        val textView = TextViewWithMarkup(context)
+
+                        textView.layoutParams = ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT
+                        )
+
+                        if (AppPreferences.isFontMonospaced(context)) {
+                            textView.typeface = Typeface.MONOSPACE
+                        }
+
+                        textView.setRawText(aocNoteContent.text)
+
+                        linearLayout.addView(textView)
+
+                        /* If content changes (for example by toggling the checkbox), update the note. */
+                        textView.onUserTextChangeListener = Runnable {
+                            if (textView.getRawText() != null) {
+                                val useCase = NoteUpdateContent(
+                                        note.position.bookId,
+                                        note.id,
+                                        textView.getRawText()?.toString())
+
+                                App.EXECUTORS.diskIO().execute {
+                                    UseCaseRunner.run(useCase)
+                                }
+                            }
+                        }
+
+                        // TODO restore this
+//                        ImageLoader.loadImages(holder.binding.itemHeadContent)
+                    }
+                }
+
+            }
 
             holder.binding.aocItemHeadContentList.visibility = View.VISIBLE
 

@@ -239,21 +239,14 @@
             tools:text="@string/note_closed_sample" />
 
         <!-- Content -->
-
-        <!--
-        nested scrolling must be disabled, otherwise the enclosing
-        SwipeRefreshLayout receives the downward scroll action and tries
-        to refresh
-        -->
-        <androidx.recyclerview.widget.RecyclerView
+        <LinearLayout
             android:id="@+id/aoc_item_head_content_list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/item_head_closed_text"
             app:layout_constraintStart_toStartOf="@+id/item_head_title"
             app:layout_constraintEnd_toEndOf="parent"
-            android:nestedScrollingEnabled="false"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:orientation="vertical"></LinearLayout>
 
         <!-- Folding button -->
         <View
