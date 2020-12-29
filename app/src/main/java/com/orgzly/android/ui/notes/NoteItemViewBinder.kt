@@ -1,11 +1,9 @@
 package com.orgzly.android.ui.notes
 
 import android.content.Context
-import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -122,46 +120,27 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
             linearLayout.removeAllViews()
 
+            val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
             alternatingTableAndTextContent.forEach { aocNoteContent ->
                 when (aocNoteContent) {
                     is AocNoteContent.AocTableNoteContent -> {
 
-                        val horizontalScrollView = HorizontalScrollView(context)
+                        val aocSectionTableTextView = layoutInflater.inflate(R.layout.aoc_item_note_content_section_table, linearLayout, false)
 
-                        horizontalScrollView.layoutParams = ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT
-                        )
+                        aocSectionTableTextView.findViewById<TextView>(R.id.aoc_section_table_text).text = aocNoteContent.text
 
-                        val textView = TextView(context)
-                        textView.typeface = Typeface.MONOSPACE
-                        textView.text = aocNoteContent.text
-
-                        textView.layoutParams = ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT
-                        )
-
-                        horizontalScrollView.addView(textView)
-
-                        linearLayout.addView(horizontalScrollView)
+                        linearLayout.addView(aocSectionTableTextView)
                     }
                     else -> {
 
-                        val textView = TextViewWithMarkup(context)
+                        val layout = layoutInflater.inflate(R.layout.aoc_item_note_content_section_text, linearLayout, false)
 
-                        textView.layoutParams = ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT
-                        )
-
-                        if (AppPreferences.isFontMonospaced(context)) {
-                            textView.typeface = Typeface.MONOSPACE
-                        }
+                        val textView = layout.findViewById<TextViewWithMarkup>(R.id.aoc_section_text)
 
                         textView.setRawText(aocNoteContent.text)
 
-                        linearLayout.addView(textView)
+                        linearLayout.addView(layout)
 
                         /* If content changes (for example by toggling the checkbox), update the note. */
                         textView.onUserTextChangeListener = Runnable {
