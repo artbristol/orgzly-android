@@ -12,6 +12,7 @@ import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.query.Query;
 import com.orgzly.android.query.QueryParser;
 import com.orgzly.android.query.user.InternalQueryParser;
+import com.orgzly.android.ui.note.EditTable;
 import com.orgzly.android.ui.savedsearch.SavedSearchFragment;
 import com.orgzly.android.ui.main.MainActivity;
 import com.orgzly.android.ui.notes.book.BookFragment;
@@ -149,6 +150,12 @@ public class DisplayManager {
                 displayNoteFragment(fragmentManager, fragment);
             }
         }
+    }
+
+    public static void displayEditTable(FragmentManager fragmentManager, long bookId, long noteId, long offsetInNote) {
+        Fragment fragment = EditTable.newInstance("yo", "roo");
+
+        displayNoteFragment(fragmentManager, fragment);
     }
 
     public static void displayNewNote(FragmentManager fragmentManager, NotePlace target) {

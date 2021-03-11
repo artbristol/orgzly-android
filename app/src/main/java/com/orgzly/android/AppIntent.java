@@ -32,6 +32,7 @@ public class AppIntent {
     public static final String ACTION_OPEN_BOOKS = "com.orgzly.intent.action.OPEN_BOOKS";
     public static final String ACTION_OPEN_BOOK = "com.orgzly.intent.action.OPEN_BOOK";
     public static final String ACTION_OPEN_SETTINGS = "com.orgzly.intent.action.OPEN_SETTINGS";
+    public static final String ACTION_EDIT_TABLE = "com.orgzly.intent.action.EDIT_TABLE";
 
     public static final String ACTION_SHOW_SNACKBAR = "com.orgzly.intent.action.SHOW_SNACKBAR";
 

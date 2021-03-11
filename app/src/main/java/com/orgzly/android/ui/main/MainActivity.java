@@ -92,7 +92,6 @@ import com.orgzly.android.usecase.NoteUpdateStateToggle;
 import com.orgzly.android.usecase.SavedSearchCreate;
 import com.orgzly.android.usecase.SavedSearchDelete;
 import com.orgzly.android.usecase.SavedSearchExport;
-import com.orgzly.android.usecase.SavedSearchImport;
 import com.orgzly.android.usecase.SavedSearchMoveDown;
 import com.orgzly.android.usecase.SavedSearchMoveUp;
 import com.orgzly.android.usecase.SavedSearchUpdate;
@@ -101,7 +100,6 @@ import com.orgzly.android.usecase.UseCaseResult;
 import com.orgzly.android.usecase.UseCaseRunner;
 import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
-import com.orgzly.android.util.MiscUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 
 import org.jetbrains.annotations.NotNull;
@@ -635,6 +633,7 @@ public class MainActivity extends CommonActivity
 
         LocalBroadcastManager bm = LocalBroadcastManager.getInstance(this);
         bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_NOTE));
+        bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_EDIT_TABLE));
         bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_FOLLOW_LINK_TO_NOTE_WITH_PROPERTY));
         bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_FOLLOW_LINK_TO_FILE));
         bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_SAVED_SEARCHES));
@@ -1275,6 +1274,13 @@ public class MainActivity extends CommonActivity
         LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
     }
 
+    public static void editTable(long bookId, long noteId) {
+        Intent intent = new Intent(AppIntent.ACTION_EDIT_TABLE);
+        intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId);
+        intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
+        LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
+    }
+
     public static void followLinkToFile(String path) {
         Intent intent = new Intent(AppIntent.ACTION_FOLLOW_LINK_TO_FILE);
         intent.putExtra(AppIntent.EXTRA_PATH, path);
@@ -1304,6 +1310,13 @@ public class MainActivity extends CommonActivity
                     long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0);
                     long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0);
                     DisplayManager.displayExistingNote(getSupportFragmentManager(), bookId, noteId);
+                    break;
+                }
+
+                case AppIntent.ACTION_EDIT_TABLE: {
+                    long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0);
+                    long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0);
+                    DisplayManager.displayEditTable(getSupportFragmentManager(), bookId, noteId, 0);
                     break;
                 }
 
