@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
 import com.orgzly.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -33,7 +36,31 @@ class EditTable : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_table, container, false)
+        val view = inflater.inflate(R.layout.fragment_edit_table, container, false)
+
+        val tableLayout = view.findViewById<TableLayout>(R.id.edit_table_table_layout)
+
+        val tableRow1 = TableRow(context)
+        val tv1 = TextView(context)
+        tv1.setText("tv1 t")
+        val tv2 = TextView(context)
+        tv2.setText("tv2 t")
+        tableRow1.addView(tv1)
+        tableRow1.addView(tv2)
+        tableLayout.addView(tableRow1)
+
+
+        val tableRow2 = TableRow(context)
+        val tv3 = TextView(context)
+        tv3.setText("tv3 t")
+        val tv4 = TextView(context)
+        tv4.setText("tv4 t")
+        tableRow2.addView(tv3)
+        tableRow2.addView(tv4)
+        tableLayout.addView(tableRow2)
+
+
+        return view
     }
 
     companion object {
