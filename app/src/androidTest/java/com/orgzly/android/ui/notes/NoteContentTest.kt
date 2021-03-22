@@ -19,7 +19,7 @@ class NoteContentTest {
 
     @Test
     fun emptyLinesShouldStayInSingleSection() {
-        checkExpected("\n\n", listOf(TextNoteContent("\n\n")))
+        checkExpected("\n\n", listOf(TextNoteContent("\n\n", 0, 1)))
     }
 
     @Test
@@ -28,9 +28,9 @@ class NoteContentTest {
 |
 
 foo|bar""", listOf(
-                TextNoteContent("foo\n"),
-                TableNoteContent("|\n"),
-                TextNoteContent("\nfoo|bar")
+                TextNoteContent("foo\n", 0, 3),
+                TableNoteContent("|\n", 4, 5),
+                TextNoteContent("\nfoo|bar", 6, 13)
         ))
     }
 
@@ -40,14 +40,14 @@ foo|bar""", listOf(
 |c|d|
 """, listOf(TableNoteContent("""|a|b|
 |c|d|
-""")))
+""", 0, 11)))
     }
 
     @Test
     fun singleTableNoFinalNewline() {
         checkExpected("""|a|b|
 |c|d|""", listOf(TableNoteContent("""|a|b|
-|c|d|""")))
+|c|d|""", 0, 10)))
     }
 
     @Test
@@ -55,9 +55,9 @@ foo|bar""", listOf(
         checkExpected("""foo
 |
 bar""", listOf(
-                TextNoteContent("foo\n"),
-                TableNoteContent("|\n"),
-                TextNoteContent("bar")
+                TextNoteContent("foo\n", 0, 3),
+                TableNoteContent("|\n", 4, 5),
+                TextNoteContent("bar", 6, 8)
         ))
     }
 
@@ -68,9 +68,9 @@ bar""", listOf(
 |
 bar
 """, listOf(
-                TextNoteContent("\n"),
-                TableNoteContent("|\n"),
-                TextNoteContent("bar\n")
+                TextNoteContent("\n", 0, 0),
+                TableNoteContent("|\n", 1, 2),
+                TextNoteContent("bar\n", 3, 6)
         ))
     }
 
@@ -79,9 +79,9 @@ bar
         checkExpected("""|zoo|
 
 |zog|""", listOf(
-                TableNoteContent("|zoo|\n"),
-                TextNoteContent("\n"),
-                TableNoteContent("|zog|")
+                TableNoteContent("|zoo|\n",0,5),
+                TextNoteContent("\n",6,6),
+                TableNoteContent("|zog|",7,11)
         ))
     }
 
@@ -91,9 +91,9 @@ bar
 |
 
 chops""", listOf(
-                TextNoteContent("foo\n"),
-                TableNoteContent("|\n"),
-                TextNoteContent("\nchops")
+                TextNoteContent("foo\n",0,3),
+                TableNoteContent("|\n",4,5),
+                TextNoteContent("\nchops",6,11)
         ))
     }
 
@@ -109,11 +109,11 @@ text3c
 |table4|
 text5
 """, listOf(
-                TextNoteContent("text1\n"),
-                TableNoteContent("|table2a|\n|table2b|\n"),
-                TextNoteContent("text3a\ntext3b\ntext3c\n"),
-                TableNoteContent("|table4|\n"),
-                TextNoteContent("text5\n")
+                TextNoteContent("text1\n",0,5),
+                TableNoteContent("|table2a|\n|table2b|\n",6,25),
+                TextNoteContent("text3a\ntext3b\ntext3c\n",26,46),
+                TableNoteContent("|table4|\n",47,55),
+                TextNoteContent("text5\n",56,61)
         ))
     }
 
@@ -150,5 +150,8 @@ text5
 
         assertEquals(input, roundTripped)
 
+        actual.forEach {
+            assertEquals(it.text, input.substring(it.startOffset, it.endOffset + 1))
+        }
     }
 }

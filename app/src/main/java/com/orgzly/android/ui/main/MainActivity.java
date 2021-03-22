@@ -1274,10 +1274,12 @@ public class MainActivity extends CommonActivity
         LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
     }
 
-    public static void editTable(long bookId, long noteId) {
+    public static void editTable(long bookId, long noteId, int tableStartOffset, int tableEndOffset) {
         Intent intent = new Intent(AppIntent.ACTION_EDIT_TABLE);
         intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId);
         intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
+        intent.putExtra(AppIntent.EXTRA_TABLE_START_OFFSET, tableStartOffset);
+        intent.putExtra(AppIntent.EXTRA_TABLE_END_OFFSET, tableEndOffset);
         LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
     }
 
@@ -1314,9 +1316,11 @@ public class MainActivity extends CommonActivity
                 }
 
                 case AppIntent.ACTION_EDIT_TABLE: {
-                    long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0);
-                    long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, 0);
-                    DisplayManager.displayEditTable(getSupportFragmentManager(), bookId, noteId, 0);
+                    long bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, -1);
+                    long noteId = intent.getLongExtra(AppIntent.EXTRA_NOTE_ID, -1);
+                    int tableStartOffset = intent.getIntExtra(AppIntent.EXTRA_TABLE_START_OFFSET, -1);
+                    int tableEndOffset = intent.getIntExtra(AppIntent.EXTRA_TABLE_END_OFFSET, -1);
+                    DisplayManager.displayEditTable(getSupportFragmentManager(), bookId, noteId, tableStartOffset, tableEndOffset);
                     break;
                 }
 

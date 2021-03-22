@@ -139,7 +139,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
                         val sog = object : SimpleOnGestureListener() {
                             override fun onLongPress(e: MotionEvent) {
 
-                                MainActivity.editTable(0, 0)
+                                MainActivity.editTable(note.position.bookId, note.id, noteContent.s_startOffset, noteContent.s_endOffset)
 
                                 LogUtils.d("GGAA", "Got here: " + e.action)
                             }
