@@ -23,7 +23,7 @@ class TableViewModel(
 
     val noteView: MutableLiveData<NoteView> = MutableLiveData()
 
-    val tableView: MutableLiveData<String> = MutableLiveData()
+    val tableView: MutableLiveData<String> = MutableLiveData("a cund")
 
     var notePayload: NotePayload? = null
 
@@ -47,10 +47,11 @@ class TableViewModel(
 
             val content = note.note.content!!
 
-
             val tableText = content.substring(tableStartOffset, tableEndOffset)
 
             tableView.postValue(tableText)
+
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "loaded data: " + tableText)
 
         }
     }

@@ -7,12 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.orgzly.BuildConfig
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
+import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentEditTableBinding
 import javax.inject.Inject
 
 class EditTableFragment : Fragment() {
+
+    private val TAG = EditTableFragment::class.java.name
 
     private lateinit var binding: FragmentEditTableBinding
 
@@ -31,7 +35,11 @@ class EditTableFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var args = requireNotNull(arguments)
+        // we ought to do something with the Bundle if it's non-null
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "onCreate")
+
+        val args = requireNotNull(arguments)
 
         val factory = TableViewModelFactory.getInstance(
                 dataRepository,
@@ -45,18 +53,21 @@ class EditTableFragment : Fragment() {
 
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        viewModel.loadData()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         binding = FragmentEditTableBinding.inflate(inflater, container, false)
 
+        binding.tableViewModel = viewModel
+
+        binding.lifecycleOwner = viewLifecycleOwner
+
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.loadData()
     }
 
     companion object {
