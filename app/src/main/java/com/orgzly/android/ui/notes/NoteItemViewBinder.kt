@@ -2,10 +2,7 @@ package com.orgzly.android.ui.notes
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.view.GestureDetector
-import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -14,12 +11,12 @@ import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.orgzly.R
 import com.orgzly.android.App
+import com.orgzly.android.AppIntent
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.ImageLoader
 import com.orgzly.android.ui.TimeType
-import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.util.TitleGenerator
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.ui.views.TextViewWithMarkup
@@ -27,7 +24,6 @@ import com.orgzly.android.usecase.NoteToggleFolding
 import com.orgzly.android.usecase.NoteToggleFoldingSubtree
 import com.orgzly.android.usecase.NoteUpdateContent
 import com.orgzly.android.usecase.UseCaseRunner
-import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.UserTimeFormatter
 import com.orgzly.databinding.ItemAgendaDividerBinding
 import com.orgzly.databinding.ItemHeadBinding
@@ -134,24 +130,13 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
                         val noteContentSectionTableTextView = layoutInflater.inflate(R.layout.item_note_content_section_table, linearLayout, false)
 
-                        noteContentSectionTableTextView.findViewById<TextView>(R.id.note_content_section_table_text).text = noteContent.text
+                        val tableTextView = noteContentSectionTableTextView.findViewById<TextView>(R.id.note_content_section_table_text)
+                        tableTextView.text = noteContent.text
 
-                        val sog = object : SimpleOnGestureListener() {
-                            override fun onLongPress(e: MotionEvent) {
-
-                                MainActivity.editTable(note.position.bookId, note.id, noteContent.s_startOffset, noteContent.s_endOffset)
-
-                                LogUtils.d("GGAA", "Got here: " + e.action)
-                            }
-                        }
-
-                        val gd = GestureDetector(context, sog)
-
-                        noteContentSectionTableTextView.setOnTouchListener { view: View, motionEvent: MotionEvent ->
-
-                            gd.onTouchEvent(motionEvent)
-                            false
-                        }
+                        tableTextView.setTag(AppIntent.EXTRA_BOOK_ID.hashCode(), note.position.bookId)
+                        tableTextView.setTag(AppIntent.EXTRA_NOTE_ID.hashCode(), note.id)
+                        tableTextView.setTag(AppIntent.EXTRA_TABLE_START_OFFSET.hashCode(), noteContent.s_startOffset)
+                        tableTextView.setTag(AppIntent.EXTRA_TABLE_END_OFFSET.hashCode(), noteContent.s_endOffset)
 
                         linearLayout.addView(noteContentSectionTableTextView)
                     }

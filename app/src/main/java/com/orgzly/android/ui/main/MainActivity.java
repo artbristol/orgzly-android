@@ -1266,6 +1266,15 @@ public class MainActivity extends CommonActivity
         viewModel.openNote(noteId);
     }
 
+    public void editTableOfView(View view) {
+        editTable(
+                (long) view.getTag(AppIntent.EXTRA_BOOK_ID.hashCode()),
+                (long) view.getTag(AppIntent.EXTRA_NOTE_ID.hashCode()),
+                (int) view.getTag(AppIntent.EXTRA_TABLE_START_OFFSET.hashCode()),
+                (int) view.getTag(AppIntent.EXTRA_TABLE_END_OFFSET.hashCode())
+        );
+    }
+
     // TODO: Consider creating NavigationBroadcastReceiver
     public static void openSpecificNote(long bookId, long noteId) {
         Intent intent = new Intent(AppIntent.ACTION_OPEN_NOTE);
