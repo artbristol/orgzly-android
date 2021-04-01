@@ -20,11 +20,6 @@
             android:layout_height="wrap_content"
             android:scrollbars="horizontal|vertical">
 
-            <TableLayout
-                android:id="@+id/edit_table_table_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
                 <EditText
                     android:id="@+id/tableContentEditText"
                     android:layout_width="wrap_content"
@@ -32,7 +27,6 @@
                     android:typeface="monospace"
                     android:text="@{tableViewModel.tableView}" />
 
-            </TableLayout>
         </HorizontalScrollView>
     </ScrollView>
 </layout>
