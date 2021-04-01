@@ -7,13 +7,6 @@
             type="com.orgzly.android.ui.note.TableViewModel" />
     </data>
 
-    <ScrollView
-        android:id="@+id/edit_table_outer_scroll"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:scrollbars="horizontal|vertical">
-
         <HorizontalScrollView
             android:id="@+id/edit_table_inner_scroll"
             android:layout_width="wrap_content"
@@ -25,8 +18,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:typeface="monospace"
-                    android:text="@{tableViewModel.tableView}" />
+                    android:text="@{tableViewModel.tableView}"
+                    android:importantForAutofill="no" />
 
         </HorizontalScrollView>
-    </ScrollView>
+
 </layout>
