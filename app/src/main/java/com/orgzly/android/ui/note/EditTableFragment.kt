@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.orgzly.BuildConfig
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
+import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentEditTableBinding
 import javax.inject.Inject
@@ -25,11 +26,17 @@ class EditTableFragment : Fragment() {
 
     private lateinit var viewModel: TableViewModel
 
+    private lateinit var sharedMainActivityViewModel: SharedMainActivityViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         App.appComponent.inject(this)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        sharedMainActivityViewModel.setFragment(FRAGMENT_TAG, null, null, 0)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +56,9 @@ class EditTableFragment : Fragment() {
                 args.getInt(ARG_TABLE_END_OFFSET))
 
         viewModel = ViewModelProviders.of(this, factory).get(TableViewModel::class.java)
+
+        sharedMainActivityViewModel = ViewModelProviders.of(requireActivity())
+                .get(SharedMainActivityViewModel::class.java)
 
 
     }
@@ -72,6 +82,7 @@ class EditTableFragment : Fragment() {
 
     companion object {
 
+        val FRAGMENT_TAG: String = EditTableFragment::class.java.name
         private const val ARG_BOOK_ID = "book_id"
         private const val ARG_NOTE_ID = "note_id"
         private const val ARG_TABLE_START_OFFSET = "table_start_offset"
